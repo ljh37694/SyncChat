@@ -9,7 +9,7 @@ function HomePage(): React.ReactElement {
   ];
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 h-full justify-center items-center">
       <ChatContainer chatList={chatList} />
     </div>
   );
