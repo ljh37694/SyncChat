@@ -1,13 +1,18 @@
 interface ChatProps {
-  text: string,
+  text: string;
+  isMyChat: boolean;
 }
 
 function Chat(props: ChatProps) {
-  const { text } = props;
+  const { text, isMyChat } = props;
+
+  const chatStyle = isMyChat
+    ? "bg-blue-400 text-white self-end"
+    : "bg-white text-black self-start";
 
   return (
-    <span className="bg-blue-400 self-center rounded-2xl p-2 text-white font-basic">
-      { text }
+    <span className={`${chatStyle} self-end rounded-2xl p-3`}>
+      {text}
     </span>
   );
 }

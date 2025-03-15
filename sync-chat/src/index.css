@@ -22,6 +22,10 @@ a:hover {
 }
 
 @layer base {
+  * {
+    font-family: var(--font-primary);
+  }
+
   div, section {
     margin: 0;
     padding: 0;
@@ -34,10 +38,28 @@ a:hover {
     min-height: 100vh;
     background-color: #fff;
     padding: 20px;
-  }  
+  }
 }
 
 @theme {
-  --font-basic: 'NoonnuBasicGothicRegular', sans-serif;
+  --font-primary: 'NoonnuBasicGothicRegular', sans-serif;
   --font-title: 'Cafe24Ssurround', sans-serif;
+}
+
+@layer utilities {
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hidden {
+    -ms-overflow-style: none;  /* IE, Edge */
+    scrollbar-width: none;      /* Firefox */
+  }
+}
+
+@layer components {
+  .container-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
