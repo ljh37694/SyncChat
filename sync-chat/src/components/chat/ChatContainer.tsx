@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import Chat from "./Chat";
 import ChatInput from "./ChatInput";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
+import NotificationNewChat from "./NotificationNewChat";
 
 interface ChatContainerProps {
   chatList: string[];
@@ -16,26 +15,55 @@ function ChatContainer(props: ChatContainerProps) {
 
   const [lastChat, setLastChat] = useState<string>("");
   const [showNotification, setShowNotification] = useState<boolean>(false);
+  const [firstLoad, setFirstLoad] = useState<boolean>(true);
 
   useEffect(() => {
-    if (chatContainerRef.current && chatContainerRef.current) {
-      const chatContainer = chatContainerRef.current;
+    const gap = getScrollGap();
 
-      const gap =
-        chatContainer.scrollHeight -
-        (chatContainer.scrollTop +
-          chatContainer.clientHeight +
-          chatContainer.clientTop);
-
-      if (gap < 100) {
-        chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (gap < 100) {
+      chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    } else {
+      if (firstLoad) {
+        setShowNotification(false);
+        setFirstLoad(false);
       } else {
         setShowNotification(true);
       }
     }
 
-    setLastChat(chatList[chatList.length - 1]);
+    if (chatList.length > 0) {
+      setLastChat(chatList[chatList.length - 1]);
+    }
   }, [chatList]);
+
+  const getScrollGap = () => {
+    if (chatContainerRef.current) {
+      const chatContainer = chatContainerRef.current;
+
+      const gap: number =
+        chatContainer.scrollHeight -
+        (chatContainer.scrollTop + chatContainer.clientHeight);
+
+      return gap;
+    }
+
+    return 0;
+  };
+
+  const onScrollChat = () => {
+    if (chatContainerRef.current) {
+      const gap = getScrollGap();
+
+      if (gap < 100) {
+        setShowNotification(false);
+      }
+    }
+  };
+
+  const onClickNotification = () => {
+    setShowNotification(false);
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <div className="flex flex-col w-full h-[calc(100vh-40px)] p-5 bg-gray-300/80 rounded-2xl overflow-y-hidden">
@@ -45,6 +73,7 @@ function ChatContainer(props: ChatContainerProps) {
 
       <section
         ref={chatContainerRef}
+        onScroll={onScrollChat}
         className="flex flex-col gap-3 w-full p-3 overflow-y-scroll scrollbar-hidden"
       >
         {chatList.map((chat, idx) => {
@@ -55,21 +84,10 @@ function ChatContainer(props: ChatContainerProps) {
       </section>
 
       {showNotification && (
-        <div
-          onClick={() => {
-            chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-            setShowNotification(false);
-          }}
-          className="text-black text-center bg-white p-3 rounded-xl mb-1.5 cursor-pointer"
-        >
-          <div className="container-center">
-            <label className="size-5"></label>
-            <p className="grow">{lastChat}</p>
-            <label className="w-5 self-end">
-              <FontAwesomeIcon icon={faArrowDown} />
-            </label>
-          </div>
-        </div>
+        <NotificationNewChat
+          lastChat={lastChat}
+          onClick={onClickNotification}
+        />
       )}
 
       <ChatInput />

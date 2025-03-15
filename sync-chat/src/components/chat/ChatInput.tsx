@@ -28,7 +28,11 @@ function ChatInput() {
       onSubmit={handleSubmit}
       className="flex gap-2 w-full p-2 bg-white rounded-2xl"
     >
-      <input className="grow focus-visible:outline-0 text-lg px-3" ref={msgInputRef} />
+      <input
+        className="grow focus-visible:outline-0 text-lg px-3 size"
+        ref={msgInputRef}
+        maxLength={1000}
+      />
 
       <div className="container-center gap-2 text-gray-400 mr-1">
         <label className="size-6 container-center">

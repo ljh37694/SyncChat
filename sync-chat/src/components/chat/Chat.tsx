@@ -11,9 +11,9 @@ function Chat(props: ChatProps) {
     : "bg-white text-black self-start";
 
   return (
-    <span className={`${chatStyle} self-end rounded-2xl p-3`}>
+    <p className={`${chatStyle} self-end rounded-2xl p-3 max-w-[40%] break-words`}>
       {text}
-    </span>
+    </p>
   );
 }
 
