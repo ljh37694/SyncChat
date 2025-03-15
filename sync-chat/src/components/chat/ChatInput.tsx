@@ -26,7 +26,7 @@ function ChatInput() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex gap-2 w-full p-3 bg-white rounded-2xl"
+      className="flex gap-2 w-full p-2 bg-white rounded-2xl"
     >
       <input className="grow focus-visible:outline-0 text-lg px-3" ref={msgInputRef} />
 

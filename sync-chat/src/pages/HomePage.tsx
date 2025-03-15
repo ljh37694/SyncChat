@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import ChatContainer from "../components/chat/ChatContainer";
-import messages from "./messages";
+import messages from "../messages";
 import { useChatListStore } from "../stores/chat-list-store";
 
 function HomePage(): React.ReactElement {
