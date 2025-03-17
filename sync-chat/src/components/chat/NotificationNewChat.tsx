@@ -1,8 +1,9 @@
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ChatType } from "../../types/common";
 
 interface Props {
-  lastChat: string;
+  lastChat: ChatType;
   onClick: () => void;
 }
 
@@ -16,7 +17,7 @@ function NotificationNewChat(props: Props) {
     >
       <div className="container-center">
         <label className="size-5"></label>
-        <p className="grow truncate px-3">{lastChat}</p>
+        <p className="grow truncate px-3">{lastChat.text}</p>
         <label className="w-5 self-end">
           <FontAwesomeIcon icon={faArrowDown} />
         </label>

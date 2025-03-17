@@ -6,20 +6,29 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRef } from "react";
 import { useChatListStore } from "../../stores/chat-list-store";
+import { ChatType } from "../../types/common";
 
 function ChatInput() {
-  const msgInputRef = useRef<HTMLInputElement>(null);
+  const textInputRef = useRef<HTMLInputElement>(null);
 
   const { addChat } = useChatListStore();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const msg: string | undefined = msgInputRef.current?.value;
+    const text: string | undefined = textInputRef.current?.value;
 
-    if (typeof msg === "string" && msg.length > 0) {
-      addChat(msg);
-      msgInputRef.current!.value = "";
+    if (typeof text === "string" && text.length > 0) {
+      const newChat: ChatType = {
+        id: 1,
+        text,
+        room: "roomId",
+        sender: "sender",
+        timestamp: new Date(),
+      }
+
+      textInputRef.current!.value = "";
+      addChat(newChat);
     }
   };
 
@@ -30,7 +39,7 @@ function ChatInput() {
     >
       <input
         className="grow focus-visible:outline-0 text-lg px-3 size"
-        ref={msgInputRef}
+        ref={textInputRef}
         maxLength={1000}
       />
 

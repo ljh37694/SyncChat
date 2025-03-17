@@ -1,10 +1,11 @@
-import { use, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Chat from "./Chat";
 import ChatInput from "./ChatInput";
 import NotificationNewChat from "./NotificationNewChat";
+import { ChatType } from "../../types/common";
 
 interface ChatContainerProps {
-  chatList: string[];
+  chatList: ChatType[];
 }
 
 function ChatContainer(props: ChatContainerProps) {
@@ -13,7 +14,7 @@ function ChatContainer(props: ChatContainerProps) {
   const chatEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
-  const [lastChat, setLastChat] = useState<string>("");
+  const [lastChat, setLastChat] = useState<ChatType | null>(null);
   const [showNotification, setShowNotification] = useState<boolean>(false);
   const [firstLoad, setFirstLoad] = useState<boolean>(true);
 
@@ -77,7 +78,7 @@ function ChatContainer(props: ChatContainerProps) {
         className="flex flex-col gap-3 w-full p-3 overflow-y-scroll scrollbar-hidden"
       >
         {chatList.map((chat, idx) => {
-          return <Chat text={chat} isMyChat={idx % 2 === 0} key={idx} />;
+          return <Chat chat={chat} isMyChat={idx % 2 === 0} key={idx} />;
         })}
 
         <div ref={chatEndRef}></div>
@@ -85,7 +86,7 @@ function ChatContainer(props: ChatContainerProps) {
 
       {showNotification && (
         <NotificationNewChat
-          lastChat={lastChat}
+          lastChat={lastChat as ChatType}
           onClick={onClickNotification}
         />
       )}
