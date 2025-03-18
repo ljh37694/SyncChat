@@ -3,6 +3,7 @@ import Chat from "./Chat";
 import ChatInput from "./ChatInput";
 import NotificationNewChat from "./NotificationNewChat";
 import { ChatType } from "../../types/common";
+import { retrieveChatList } from "../../api/chatApi";
 
 interface ChatContainerProps {
   chatList: ChatType[];
@@ -36,6 +37,16 @@ function ChatContainer(props: ChatContainerProps) {
       setLastChat(chatList[chatList.length - 1]);
     }
   }, [chatList]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const chatList = await retrieveChatList("roomId");
+
+      console.log(chatList);
+    }
+
+    fetchData();
+  }, []);
 
   const getScrollGap = () => {
     if (chatContainerRef.current) {
@@ -75,7 +86,7 @@ function ChatContainer(props: ChatContainerProps) {
       <section
         ref={chatContainerRef}
         onScroll={onScrollChat}
-        className="flex flex-col gap-3 w-full p-3 overflow-y-scroll scrollbar-hidden"
+        className="flex flex-col grow gap-3 w-full p-3 overflow-y-scroll scrollbar-hidden"
       >
         {chatList.map((chat, idx) => {
           return <Chat chat={chat} isMyChat={idx % 2 === 0} key={idx} />;

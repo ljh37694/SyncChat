@@ -23,7 +23,7 @@ public class ChatController {
 	}
 	
 	@PostMapping("/rooms/{roomId}/users/{userId}")
-	public Chat postChat(@PathVariable String roomId,
+	public Chat addChat(@PathVariable String roomId,
 						@PathVariable String userId,
 						@RequestBody Chat chat) {
 		chatService.addChat(chat);
