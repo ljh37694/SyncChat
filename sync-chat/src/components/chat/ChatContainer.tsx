@@ -39,13 +39,21 @@ function ChatContainer(props: ChatContainerProps) {
   }, [chatList]);
 
   useEffect(() => {
-    async function fetchData() {
-      const chatList = await retrieveChatList("roomId");
+    console.log(import.meta.env.VITE_API_URL);
 
-      console.log(chatList);
-    }
-
-    fetchData();
+    fetch("http://localhost:8080/rooms/roomId", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authentication": "Basic dXNlcjpwYXNzd29yZA==",
+      },
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      }
+    )
   }, []);
 
   const getScrollGap = () => {

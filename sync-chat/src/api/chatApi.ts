@@ -1,12 +1,10 @@
-import ky from 'ky';
-import { ChatType } from '../types/common';
-
-const API_URL =  import.meta.env.VITE_API_URL;
+import { ChatType } from "../types/common";
+import apiClient from "./apiClient";
 
 export const retrieveChatList = async (roomId: string) => {
-  return await ky.get(`${API_URL}/rooms/${roomId}`).json();
-}
+  return await apiClient.get("rooms/" + roomId).json();
+};
 
 export const sendChat = async (chat: ChatType) => {
-  return await ky.post(API_URL + "/rooms/roomId", { json: chat }).json();
+  return await apiClient.post("rooms/" + chat.room, { json: chat }).json();
 }

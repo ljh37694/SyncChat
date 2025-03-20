@@ -18,8 +18,8 @@ public class ChatController {
 	}
 	
 	@GetMapping("/rooms/{roomId}")
-	public List<Chat> getChatList(@PathVariable String roomId) {
-		return chatService.retrieveChatListBySender(roomId);
+	public List<Chat> getChatList(@PathVariable(name = "roomId") String roomId) {
+		return chatService.retrieveChatListByRoomId(roomId);
 	}
 	
 	@PostMapping("/rooms/{roomId}/users/{userId}")

@@ -27,8 +27,8 @@ public class ChatService {
 				"roomId", LocalDate.now()));
 	}
 	
-	public List<Chat> retrieveChatListBySender(String sender) {
-		Predicate<? super Chat> predicate = chat -> chat.getSender() == sender;
+	public List<Chat> retrieveChatListByRoomId(String roomId) {
+		Predicate<? super Chat> predicate = chat -> chat.getRoomId() == roomId;
 		
 		return chatList.stream().filter(predicate).toList();
 	}

@@ -6,15 +6,15 @@ public class Chat {
 	private Integer id;
 	private String sender;
 	private String text;
-	private String room;
+	private String roomId;
 	private LocalDate timestamp;
 	
-	public Chat(Integer id, String sender, String text, String room, LocalDate timestamp) {
+	public Chat(Integer id, String sender, String text, String roomId, LocalDate timestamp) {
 		super();
 		this.id = id;
 		this.sender = sender;
 		this.text = text;
-		this.room = room;
+		this.roomId = roomId;
 		this.timestamp = timestamp;
 	}
 	
@@ -39,11 +39,11 @@ public class Chat {
 		this.text = text;
 	}
 	
-	public String getRoom() {
-		return room;
+	public String getRoomId() {
+		return roomId;
 	}
-	public void setRoom(String room) {
-		this.room = room;
+	public void setRoomId(String roomId) {
+		this.roomId = roomId;
 	}
 	
 	public LocalDate getTimestamp() {
@@ -55,7 +55,7 @@ public class Chat {
 	
 	@Override
 	public String toString() {
-		return "Chat [id=" + id + ", sender=" + sender + ", text=" + text + ", room=" + room + ", timestamp="
+		return "Chat [id=" + id + ", sender=" + sender + ", text=" + text + ", roomId=" + roomId + ", timestamp="
 				+ timestamp + "]";
 	}
 }
