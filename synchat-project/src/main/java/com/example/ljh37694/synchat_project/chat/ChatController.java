@@ -19,13 +19,15 @@ public class ChatController {
 	
 	@GetMapping("/rooms/{roomId}")
 	public List<Chat> getChatList(@PathVariable(name = "roomId") String roomId) {
+		System.out.println(chatService.retrieveChatListByRoomId(roomId));
+		
 		return chatService.retrieveChatListByRoomId(roomId);
 	}
 	
-	@PostMapping("/rooms/{roomId}/users/{userId}")
-	public Chat addChat(@PathVariable String roomId,
-						@PathVariable String userId,
-						@RequestBody Chat chat) {
+	@PostMapping("/rooms/{roomId}")
+	public Chat addChat(@PathVariable(name = "roomId") String roomId, @RequestBody Chat chat) {
+		System.out.println(chat);
+		chat.setRoomId(roomId);
 		chatService.addChat(chat);
 		
 		return chat;

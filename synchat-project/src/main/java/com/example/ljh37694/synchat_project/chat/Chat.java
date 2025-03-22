@@ -18,6 +18,8 @@ public class Chat {
 		this.timestamp = timestamp;
 	}
 	
+	public Chat() {}
+	
 	public Integer getId() {
 		return id;
 	}

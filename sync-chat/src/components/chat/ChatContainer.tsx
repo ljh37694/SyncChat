@@ -3,7 +3,8 @@ import Chat from "./Chat";
 import ChatInput from "./ChatInput";
 import NotificationNewChat from "./NotificationNewChat";
 import { ChatType } from "../../types/common";
-import { retrieveChatList } from "../../api/chatApi";
+import apiClient from "../../api/apiClient";
+import { useChatListStore } from "../../stores/chat-list-store";
 
 interface ChatContainerProps {
   chatList: ChatType[];
@@ -14,15 +15,16 @@ function ChatContainer(props: ChatContainerProps) {
 
   const chatEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const lastChatRef = useRef<HTMLDivElement>(null);
 
   const [lastChat, setLastChat] = useState<ChatType | null>(null);
   const [showNotification, setShowNotification] = useState<boolean>(false);
   const [firstLoad, setFirstLoad] = useState<boolean>(true);
 
-  useEffect(() => {
-    const gap = getScrollGap();
+  const { setChatList } = useChatListStore();
 
-    if (gap < 100) {
+  useEffect(() => {
+    if (!isScrolledAboveLastChat()) {
       chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
     } else {
       if (firstLoad) {
@@ -39,44 +41,28 @@ function ChatContainer(props: ChatContainerProps) {
   }, [chatList]);
 
   useEffect(() => {
-    console.log(import.meta.env.VITE_API_URL);
-
-    fetch("http://localhost:8080/rooms/roomId", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Authentication": "Basic dXNlcjpwYXNzd29yZA==",
-      },
-      credentials: "include",
-    })
-      .then((res) => res.json())
+    apiClient
+      .get<ChatType[]>("rooms/roomId")
+      .json()
       .then((data) => {
-        console.log(data);
-      }
-    )
+        setChatList(data);
+      });
   }, []);
 
-  const getScrollGap = () => {
-    if (chatContainerRef.current) {
-      const chatContainer = chatContainerRef.current;
+  const isScrolledAboveLastChat = (): boolean => {
+    const chatContainer = chatContainerRef.current as HTMLDivElement;
 
-      const gap: number =
-        chatContainer.scrollHeight -
-        (chatContainer.scrollTop + chatContainer.clientHeight);
+    const gap: number =
+      chatContainer.scrollHeight -
+      chatContainer.scrollTop -
+      chatContainer.clientHeight;
 
-      return gap;
-    }
-
-    return 0;
+    return gap > 160;
   };
 
   const onScrollChat = () => {
-    if (chatContainerRef.current) {
-      const gap = getScrollGap();
-
-      if (gap < 100) {
-        setShowNotification(false);
-      }
+    if (isScrolledAboveLastChat()) {
+      setShowNotification(false);
     }
   };
 
@@ -97,7 +83,7 @@ function ChatContainer(props: ChatContainerProps) {
         className="flex flex-col grow gap-3 w-full p-3 overflow-y-scroll scrollbar-hidden"
       >
         {chatList.map((chat, idx) => {
-          return <Chat chat={chat} isMyChat={idx % 2 === 0} key={idx} />;
+          return <Chat key={idx} isMyChat={idx % 2 == 0} chat={chat} />;
         })}
 
         <div ref={chatEndRef}></div>
@@ -109,6 +95,8 @@ function ChatContainer(props: ChatContainerProps) {
           onClick={onClickNotification}
         />
       )}
+
+      <div ref={lastChatRef} className="fixed bottom-52"></div>
 
       <ChatInput />
     </div>

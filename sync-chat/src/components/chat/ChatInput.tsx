@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRef } from "react";
 import { useChatListStore } from "../../stores/chat-list-store";
 import { ChatType } from "../../types/common";
+import apiClient from "../../api/apiClient";
 
 function ChatInput() {
   const textInputRef = useRef<HTMLInputElement>(null);
@@ -29,6 +30,10 @@ function ChatInput() {
 
       textInputRef.current!.value = "";
       addChat(newChat);
+
+      apiClient.post<ChatType>("rooms/roomId", {
+        json: newChat,
+      });
     }
   };
 

@@ -28,7 +28,7 @@ public class ChatService {
 	}
 	
 	public List<Chat> retrieveChatListByRoomId(String roomId) {
-		Predicate<? super Chat> predicate = chat -> chat.getRoomId() == roomId;
+		Predicate<? super Chat> predicate = chat -> roomId.equals(chat.getRoomId());
 		
 		return chatList.stream().filter(predicate).toList();
 	}
